@@ -1,0 +1,84 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum IncidentStatus {
+  TODO
+  INPROGRESS
+  INREVIEW
+  RESOLVED
+  CLOSED
+  REOPENED
+}
+
+enum IncidentEventType {
+  CREATED 
+  STATUSCHANGE
+  PRIORITYCHANGE
+  COMMENT
+  ALERTRECIEVED
+}
+
+model User {
+  userId String @id @default(uuid())
+  Email String @unique
+  Username String @unique
+  Password String
+  role Role @default(USER) 
+  createdAt DateTime @default(now())
+  updatedAt DateTime 
+  incidentsReported Incident[] @relation("Reporter")
+  incidentsAssigned Incident[] @relation("Assignee")
+  events IncidentEvent[]
+}
+
+
+model Incident {
+  IncidentId String @id @default(uuid())
+  Title String
+  Description String
+  Status IncidentStatus @default(TODO)
+  Priority Priority @default(LOW)
+  Evidence Json?
+  reporter User @relation("Reporter", fields: [ReporterId], references: [userId])
+  assignee User? @relation("Assignee", fields: [AssigneeId], references: [userId])
+  ReporterId String
+  AssigneeId String ?
+  CreatedAt DateTime @default(now())
+  ResolvedAt DateTime?
+  events IncidentEvent[]
+}
+
+model IncidentEvent {
+  AlertId String @id @default(uuid())
+  incident Incident @relation(fields: [IncidentId], references: [IncidentId]) 
+  IncidentId String
+  actor User @relation(fields: [ActorId], references:[userId])
+  ActorId String
+  EventType IncidentEventType @default(CREATED)
+  Message String
+  TimeStamp DateTime @default(now())
+}
