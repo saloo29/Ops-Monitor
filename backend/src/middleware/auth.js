@@ -7,7 +7,10 @@ const authenticate = (req, res, next) => {
 
   if(token){
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.userId = decoded;
+    req.user = decoded;
+
+    console.log("inside authmiddleware, check the user object:", req.user);
+
     next();
   }
 

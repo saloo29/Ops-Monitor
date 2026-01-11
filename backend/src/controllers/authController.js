@@ -67,9 +67,14 @@ export const loginUser = async (req, res) => {
 
     if(matchedPassword ){
       const accessToken = jwt.sign({
-        userId: existingUser.userId
+        userId: existingUser.userId,
+        role: existingUser.role
       }, process.env.JWT_SECRET)
+
+
       console.log(existingUser.userId);
+      console.log(existingUser.role);
+      
       return res.status(200).json({
         message: "Login successful",
         accessToken: accessToken,
