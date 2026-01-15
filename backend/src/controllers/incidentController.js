@@ -29,13 +29,49 @@ export const createIncident = async (req, res) => {
 
 export const getIncidents = async (req, res) => {
   try{
-    const incidents = await prisma.Incident.findMany();
+    const page =  parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 6;
+    const sort = req.query.sort ||  "createdAt";
+    const search = req.query.search || "";
 
+
+    const skip = (page - 1) * limit;
+
+    const [incidents, total] = await Promise.all([
+      await prisma.Incident.findMany({
+        where:{
+            OR: [
+              {Title: {contains: search, mode: "insensitive"}},
+              {Description: {contains: search, mode: "insensitive"}}
+            ]
+        },
+        skip: skip,
+        take: limit,
+        orderBy: {
+          [sort]: "desc"
+        }
+      }),
+
+      prisma.Incident.count({
+        where: {
+          OR: [
+            {Title: {contains: search, mode: "insensitive"}},
+            {Description: {contains: search, mode: "insensitive"}}
+          ]
+        }
+      })
+    ]);
     console.log(incidents);
      
     return res.status(200).json({
       message: "Incidents fetched successfully",
-      incidents
+      data: incidents, 
+      meta: {
+        page,
+        limit,
+        total,
+        totalPages : Math.ceil(total/limit)
+      }
      });
   } catch(err) {
     return res.status(500).json({
@@ -43,3 +79,4 @@ export const getIncidents = async (req, res) => {
     });
   }
 }
+

@@ -5,7 +5,7 @@ import { createIncident, getIncidents } from "../controllers/incidentController.
 const router = Router();
 
 router.post('/incidents', authenticate, createIncident);
-router.get('/incidents', getIncidents)
+router.get('/incidents', authenticate, getIncidents)
 
 export default router;
 
