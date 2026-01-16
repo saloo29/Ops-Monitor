@@ -22,7 +22,7 @@ export const createIncident = async (req, res) => {
   return res.status(201).json(incident);
   } catch (err) {
     return res.status(400).json({
-      error: err.message 
+      message: err.message 
     });
   } 
 }
@@ -31,9 +31,8 @@ export const getIncidents = async (req, res) => {
   try{
     const page =  parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 6;
-    const sort = req.query.sort ||  "createdAt";
+    const sort = req.query.sort ||  "CreatedAt";
     const search = req.query.search || "";
-
 
     const skip = (page - 1) * limit;
 
@@ -75,8 +74,15 @@ export const getIncidents = async (req, res) => {
      });
   } catch(err) {
     return res.status(500).json({
-      error: err.message
+      message: err.message
     });
   }
 }
 
+export const getIncidentById = (req, res) => {
+  try{
+
+  } catch(err) {
+
+  }
+}
