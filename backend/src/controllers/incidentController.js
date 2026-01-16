@@ -79,10 +79,28 @@ export const getIncidents = async (req, res) => {
   }
 }
 
-export const getIncidentById = (req, res) => {
+export const getIncidentById = async (req, res) => {
   try{
+    const incidentId = req.params.id;
 
+    const incident = await prisma.Incident.findUnique({
+      where: {
+          IncidentId : incidentId
+      }
+    });
+
+    if(!incident){
+      return res.status(404).json({
+        message: "Incident not found."
+      });
+    }
+    
+    return res.status(200).json({
+      incident
+    })
   } catch(err) {
-
+    return res.status(500).json({
+      message: err.message
+    })
   }
 }

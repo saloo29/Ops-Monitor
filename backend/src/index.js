@@ -19,8 +19,7 @@ app.get('/', async(req, res) => {
       error: error.message
     });
   }
-})
-
+});
 
 app.listen(3000, () => {
   console.log("server running on 3000")
