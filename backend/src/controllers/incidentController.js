@@ -1,5 +1,5 @@
 import prisma from "../lib/prisma.js"
-import { IncidentSchema } from "../validations/incidentSchema.js";
+import { IncidentSchema, PatchIncidentSchema } from "../validations/incidentSchema.js";
 import { PRIORITY } from "../utils/enums.js";
 
 export const createIncident = async (req, res) => {
@@ -103,4 +103,48 @@ export const getIncidentById = async (req, res) => {
       message: err.message
     })
   }
+}
+
+
+export const patchIncident = async (req, res) =>{
+  try{
+    const {id} = req.params;
+    const {Status, Priority, AssigneeId} = PatchIncidentSchema.parse(req.body);
+
+    console.log("req.body looks like:", req.body);
+
+    const data = {};
+
+    if(Status) data.Status = Status;
+    if(Priority) data.Priority = Priority;
+    if(AssigneeId)  data.AssigneeId = AssigneeId;
+
+    console.log("data looks like:", data);
+
+
+    if(Object.keys(data).length === 0){
+      return res.status(400).json({
+        message: "No data provided to update Incident."
+      })
+    }
+
+    const updatedIncident = await prisma.Incident.update({
+      where: {
+        IncidentId : id
+      },
+      data
+    });
+
+    console.log("updatedincident looks", updatedIncident)
+
+    res.status(201).json({
+      message: "Incident updated successfully!",
+      updatedIncident
+    });
+  } catch(err) {
+    return res.status(500).json({
+      message: err.message
+    })
+  }
+
 }
