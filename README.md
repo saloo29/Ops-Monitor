@@ -21,11 +21,17 @@ Frontend - Next js, TypeScript, Tailwind CSS, shadcn, TanStack Table
 API Endpoints:
 
 Auth:
+
 POST | /api/user/signup | To sign up a new user account
+
 POST | /api/user/login | To login an existing user account
 
 Incidents:
+
 POST | /api/incidents | To create a new incidents
+
 GET | /api/incidents | To retrieve all the incidents (with pagination and filters)
+
 GET | /api/incidents/:id | To retrieve details of single incident by ID
+
 PATCH | /api/incidents/:id | To edit the details of single incident (status, priority, assignee)
