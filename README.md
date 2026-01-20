@@ -1,4 +1,5 @@
 What is Ops Monitor?
+
 A real-time incident tracking dashboard for engineering and operations teams. It helps teams to log, track, and manage post production incidents, outages, and SLA breaches in a structered way.
 
 Project Features:
@@ -8,9 +9,13 @@ Project Features:
 - Update incidetns as the progress through their lifecycle
 
 Tech Stack:
+
 Backend - Node js, Express jx, Prisma ORM, PostgresSQL, Socket.io (planned implementation for real-time updates), Zod(Validation)
+
 Infra: Docker, Docker Compose
+
 Auth: JWT
+
 Frontend - Next js, TypeScript, Tailwind CSS, shadcn, TanStack Table
 
 API Endpoints:
