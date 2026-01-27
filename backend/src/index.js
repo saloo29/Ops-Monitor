@@ -11,16 +11,6 @@ app.use(express.json());
 app.use('/api', userRoutes);
 app.use('/api', incidentRoutes);
 
-app.get('/', async(req, res) => {
-  try{
-    res.send("hello")
-  } catch(error) {
-    res.status(500).json({
-      error: error.message
-    });
-  }
-});
-
 app.listen(3000, () => {
   console.log("server running on 3000")
 })

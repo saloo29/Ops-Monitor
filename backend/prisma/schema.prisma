@@ -14,7 +14,7 @@ datasource db {
 }
 
 enum Role {
-  USER
+  RESPONDER
   ADMIN
 }
 
@@ -26,12 +26,11 @@ enum Priority {
 }
 
 enum IncidentStatus {
-  TODO
-  INPROGRESS
-  INREVIEW
+  OPEN
+  INVESTIGATING
+  IDENTIFIED
+  MONITORING
   RESOLVED
-  CLOSED
-  REOPENED
 }
 
 enum IncidentEventType {
@@ -44,10 +43,10 @@ enum IncidentEventType {
 
 model User {
   userId String @id @default(uuid())
-  Email String @unique
-  Username String @unique
-  Password String
-  role Role @default(USER) 
+  email String @unique
+  username String @unique
+  password String
+  role Role @default(RESPONDER) 
   createdAt DateTime @default(now())
   updatedAt DateTime 
   incidentsReported Incident[] @relation("Reporter")
@@ -55,30 +54,29 @@ model User {
   events IncidentEvent[]
 }
 
-
 model Incident {
-  IncidentId String @id @default(uuid())
-  Title String
-  Description String
-  Status IncidentStatus @default(TODO)
-  Priority Priority @default(LOW)
-  Evidence Json?
-  reporter User @relation("Reporter", fields: [ReporterId], references: [userId])
-  assignee User? @relation("Assignee", fields: [AssigneeId], references: [userId])
-  ReporterId String
-  AssigneeId String ?
-  CreatedAt DateTime @default(now())
-  ResolvedAt DateTime?
+  incidentId String @id @default(uuid())
+  title String
+  description String
+  status IncidentStatus @default(OPEN)
+  priority Priority @default(LOW)
+  evidence Json?
+  reporter User @relation("Reporter", fields: [reporterId], references: [userId])
+  assignee User? @relation("Assignee", fields: [assigneeId], references: [userId])
+  reporterId String
+  assigneeId String ?
+  createdAt DateTime @default(now())
+  resolvedAt DateTime?
   events IncidentEvent[]
 }
 
 model IncidentEvent {
-  AlertId String @id @default(uuid())
-  incident Incident @relation(fields: [IncidentId], references: [IncidentId]) 
-  IncidentId String
-  actor User @relation(fields: [ActorId], references:[userId])
-  ActorId String
-  EventType IncidentEventType @default(CREATED)
-  Message String
-  TimeStamp DateTime @default(now())
+  alertId String @id @default(uuid())
+  incident Incident @relation(fields: [incidentId], references: [incidentId]) 
+  incidentId String
+  actor User @relation(fields: [actorId], references:[userId])
+  actorId String
+  eventType IncidentEventType @default(CREATED)
+  message String
+  timeStamp DateTime @default(now())
 }

@@ -3,7 +3,7 @@ import { IncidentSchema, PatchIncidentSchema } from "../validations/incidentSche
 import { PRIORITY } from "../utils/enums.js";
 
 export const createIncident = async (req, res) => {
-  const { Title, Description, Status, Priority} = IncidentSchema.parse(req.body);
+  const { title, description, status, priority} = IncidentSchema.parse(req.body);
 
   console.log(req.body);
 
@@ -12,11 +12,11 @@ export const createIncident = async (req, res) => {
   try{
     const incident = await prisma.Incident.create({
     data: {
-      Title,
-      Description,
-      Priority: Priority || PRIORITY.LOW, 
-      Status: Status,
-      ReporterId: req.user.userId,
+      title,
+      description,
+      priority: priority || PRIORITY.LOW, 
+      status: status,
+      reporterId: req.user.userId,
     }
   });
   return res.status(201).json(incident);
@@ -31,7 +31,7 @@ export const getIncidents = async (req, res) => {
   try{
     const page =  parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 6;
-    const sort = req.query.sort ||  "CreatedAt";
+    const sort = req.query.sort ||  "createdAt";
     const search = req.query.search || "";
 
     const skip = (page - 1) * limit;
@@ -40,8 +40,8 @@ export const getIncidents = async (req, res) => {
       await prisma.Incident.findMany({
         where:{
             OR: [
-              {Title: {contains: search, mode: "insensitive"}},
-              {Description: {contains: search, mode: "insensitive"}}
+              {title: {contains: search, mode: "insensitive"}},
+              {description: {contains: search, mode: "insensitive"}}
             ]
         },
         skip: skip,
@@ -54,8 +54,8 @@ export const getIncidents = async (req, res) => {
       prisma.Incident.count({
         where: {
           OR: [
-            {Title: {contains: search, mode: "insensitive"}},
-            {Description: {contains: search, mode: "insensitive"}}
+            {title: {contains: search, mode: "insensitive"}},
+            {description: {contains: search, mode: "insensitive"}}
           ]
         }
       })
@@ -85,7 +85,7 @@ export const getIncidentById = async (req, res) => {
 
     const incident = await prisma.Incident.findUnique({
       where: {
-          IncidentId : incidentId
+          incidentId : incidentId
       }
     });
 
@@ -109,15 +109,15 @@ export const getIncidentById = async (req, res) => {
 export const patchIncident = async (req, res) =>{
   try{
     const {id} = req.params;
-    const {Status, Priority, AssigneeId} = PatchIncidentSchema.parse(req.body);
+    const {status, priority, assigneeId} = PatchIncidentSchema.parse(req.body);
 
     console.log("req.body looks like:", req.body);
 
     const data = {};
 
-    if(Status) data.Status = Status;
-    if(Priority) data.Priority = Priority;
-    if(AssigneeId)  data.AssigneeId = AssigneeId;
+    if(status) data.status = status;
+    if(priority) data.priority = priority;
+    if(assigneeId)  data.assigneeId = assigneeId;
 
     console.log("data looks like:", data);
 
@@ -130,7 +130,7 @@ export const patchIncident = async (req, res) =>{
 
     const updatedIncident = await prisma.Incident.update({
       where: {
-        IncidentId : id
+        incidentId : id
       },
       data
     });

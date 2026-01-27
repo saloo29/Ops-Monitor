@@ -12,7 +12,7 @@ export const signUpUser = async (req, res) => {
     const validatedData = signUpSchema.parse(req.body);
 
     const existingUser = await prisma.User.findUnique({
-      where: {Email: validatedData.Email}
+      where: {email: validatedData.email}
     });
 
     if(existingUser) {
@@ -21,13 +21,13 @@ export const signUpUser = async (req, res) => {
       });
     }
 
-    const hashedPassword = await bcrypt.hash(validatedData.Password, 6);
+    const hashedPassword = await bcrypt.hash(validatedData.password, 6);
 
     const user = await prisma.User.create({
       data: { 
-        Email: validatedData.Email, 
-        Username: validatedData.Username, 
-        Password: hashedPassword, 
+        email: validatedData.email, 
+        username: validatedData.username, 
+        password: hashedPassword, 
         role: validatedData.role,
         updatedAt: new Date()
       }
@@ -53,9 +53,9 @@ export const signUpUser = async (req, res) => {
 
 export const loginUser = async (req, res) => {
   try{
-    const{Username, Password} = req.body;
+    const{username, password} = req.body;
     const existingUser = await prisma.User.findUnique({
-      where: {Username: Username}
+      where: {username: username}
     });
 
     if(!existingUser){
@@ -63,7 +63,7 @@ export const loginUser = async (req, res) => {
         message: "User not found."
       });
     }
-    const matchedPassword = await bcrypt.compare(Password, existingUser.Password);
+    const matchedPassword = await bcrypt.compare(password, existingUser.password);
 
     if(matchedPassword ){
       const accessToken = jwt.sign({
@@ -80,7 +80,7 @@ export const loginUser = async (req, res) => {
         accessToken: accessToken,
         data: {
           userId : existingUser.userId,
-          Username: existingUser.Username,
+          username: existingUser.username,
         }
       });
     } else{
