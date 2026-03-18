@@ -1,12 +1,18 @@
 "use client"
 
+import PageWrapper from '../components/layout/PageWrapper'
+
 const Dashboard = () => {
 
   return (
-    <div>
-      <h2>Systems Health</h2>
-      <p>Real-time infrastructure and service operational overview.</p>
-    </div>
+    <PageWrapper
+      title='Systems Health'
+      description='Real-time infrastructure and service operational overview.'
+    >
+      <div>
+        Return dashboard content
+      </div>
+    </PageWrapper>
   )
 }
 
