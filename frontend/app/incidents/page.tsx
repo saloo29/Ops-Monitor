@@ -1,6 +1,6 @@
 'use client'
 
-import IncidentList from '../components/IncidentList'
+import IncidentList from '../components/incidents/IncidentList'
 import PageWrapper from '../components/layout/PageWrapper'
 
 const Incident = () => {

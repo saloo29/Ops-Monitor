@@ -6,7 +6,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { useIncident } from "../hooks/useIncident"
+import { useIncident } from "../../hooks/useIncident"
+import SeverityBadge from "../shared/SeverityBadge";
+import StatusDot from "../shared/StatusDot";
 
 const IncidentList = () => {
   const {data: incidents, error } = useIncident();
@@ -31,8 +33,8 @@ const IncidentList = () => {
         {incidents?.map((incident) => (
           <TableRow key={incident.incidentId}>
             <TableCell className="font-medium">{incident.title}</TableCell>
-            <TableCell>{incident.priority}</TableCell>
-            <TableCell>{incident.status}</TableCell>
+            <TableCell><SeverityBadge level={incident.priority} /> </TableCell>
+            <TableCell><StatusDot status={incident.status} /> </TableCell>
             <TableCell className="text-right">{incident.createdAt}</TableCell>
           </TableRow>
         ))}

@@ -1,5 +1,5 @@
-type IncidentStatus = "OPEN" | "INVESTIGATING" | "INDENTIFIED" | "MONITORING" | "RESOLVED";
-type IncidentPriority = "LOW" | "MEDIUM" | "HIGH" | "CRTICAL";
+type IncidentStatus = "OPEN" | "INVESTIGATING" | "IDENTIFIED" | "MONITORING" | "RESOLVED";
+type IncidentPriority = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
 
 export type Incident = {
   incidentId: string;
