@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import ThemeToggle from '../shared/ThemeToggle'
 
 const links = [
   {href: '/dashboard', label: 'Dashboard'},
@@ -48,7 +49,8 @@ const NavBar = () => {
         })
         }
       </div>
-        <div  className="mr-14 flex items-center justify-center">
+        <div  className="mr-14 flex items-center justify-center gap-3">
+          <ThemeToggle />
           <span className='font-bold'>Admin</span>
         </div>
     </header>

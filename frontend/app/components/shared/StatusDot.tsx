@@ -1,6 +1,6 @@
 
 const statusDotConfig = {
-  OPEN: 'bg-slate-200 text-slate-800',
+  OPEN: 'bg-slate-500 text-slate-800',
   INVESTIGATING: 'bg-indigo-600 text-white',
   IDENTIFIED: 'bg-purple-600 text-white',
   MONITORING: 'bg-teal-600 text-white',

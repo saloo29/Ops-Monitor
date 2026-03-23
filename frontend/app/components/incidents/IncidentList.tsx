@@ -9,6 +9,7 @@ import {
 import { useIncident } from "../../hooks/useIncident"
 import SeverityBadge from "../shared/SeverityBadge";
 import StatusDot from "../shared/StatusDot";
+import { formatDate } from "@/lib/formatDate"
 
 const IncidentList = () => {
   const {data: incidents, error } = useIncident();
@@ -17,6 +18,7 @@ const IncidentList = () => {
     return <div>something went wrong</div>
   };
 
+  
 
   return (
     <Table>
@@ -25,7 +27,6 @@ const IncidentList = () => {
           <TableHead className="w-25">INCIDENT</TableHead>
           <TableHead>SEVERITY</TableHead>
           <TableHead>STATUS</TableHead>
-          <TableHead className="text-right">TEAM</TableHead>
           <TableHead className="text-right">CREATED</TableHead>
         </TableRow>
       </TableHeader>
@@ -35,7 +36,7 @@ const IncidentList = () => {
             <TableCell className="font-medium">{incident.title}</TableCell>
             <TableCell><SeverityBadge level={incident.priority} /> </TableCell>
             <TableCell><StatusDot status={incident.status} /> </TableCell>
-            <TableCell className="text-right">{incident.createdAt}</TableCell>
+            <TableCell>{formatDate(incident.createdAt)}</TableCell>
           </TableRow>
         ))}
       </TableBody>
