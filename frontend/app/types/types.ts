@@ -13,3 +13,13 @@ export type Incident = {
   createdAt: string;
   resolvedAt: string | null;
 }
+
+export type IncidentResponse = {
+  data: Incident[];
+  meta:{
+    page: number;
+    pageSize: number;
+    total: number;
+    totalPages: number;
+  }
+}

@@ -8,6 +8,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.use((res, req, next) => {
+  console.log("Incoming request is " +  req.method + req.url);
+  next();
+});
+
 app.use('/api', userRoutes);
 app.use('/api', incidentRoutes);
 

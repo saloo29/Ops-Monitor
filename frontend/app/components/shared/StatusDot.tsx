@@ -1,7 +1,7 @@
 
 const statusDotConfig = {
-  OPEN: 'bg-slate-500 text-slate-800',
-  INVESTIGATING: 'bg-indigo-600 text-white',
+  OPEN: 'bg-orange-500 text-slate-800 animate-pulse',
+  INVESTIGATING: 'bg-indigo-600 text-white animate-pulse',
   IDENTIFIED: 'bg-purple-600 text-white',
   MONITORING: 'bg-teal-600 text-white',
   RESOLVED: 'bg-green-600 text-white'

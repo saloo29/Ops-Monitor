@@ -10,7 +10,7 @@ export const IncidentSchema = z.object({
 
 
 export const PatchIncidentSchema = z.object({
-  satus: z.enum(Object.values(STATUS)).optional(),
+  status: z.enum(Object.values(STATUS)).optional(),
   priority: z.enum(Object.values(PRIORITY)).optional(),
   assigneeId: z.string().optional()
 })

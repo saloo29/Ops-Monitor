@@ -1,9 +1,9 @@
-import { Incident } from "../types/types";
+import { IncidentResponse } from "../types/types";
 import api from "@/lib/axios";
 
-const getIncident = async() : Promise<Incident []> => {
-  const response = await api.get('/api/incidents');
-  return response.data.data;
+const getIncident = async({ page = 1, pageSize = 10 } : { page: number, pageSize: number}): Promise<IncidentResponse> => {
+  const response = await api.get(`/api/incidents?page=${page}&limit=${pageSize}`);
+  return response.data;
 } 
 
 export default getIncident;

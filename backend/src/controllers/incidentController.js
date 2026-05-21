@@ -1,6 +1,6 @@
 import prisma from "../lib/prisma.js"
 import { IncidentSchema, PatchIncidentSchema } from "../validations/incidentSchema.js";
-import { PRIORITY } from "../utils/enums.js";
+import { PRIORITY, STATUS } from "../utils/enums.js";
 
 export const createIncident = async (req, res) => {
   const { title, description, status, priority} = IncidentSchema.parse(req.body);
@@ -15,7 +15,7 @@ export const createIncident = async (req, res) => {
       title,
       description,
       priority: priority || PRIORITY.LOW, 
-      status: status,
+      status: status || STATUS.OPEN,
       reporterId: req.user.userId,
     }
   });
@@ -30,7 +30,7 @@ export const createIncident = async (req, res) => {
 export const getIncidents = async (req, res) => {
   try{
     const page =  parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 6;
+    const limit = parseInt(req.query.limit) || 10;
     const sort = req.query.sort ||  "createdAt";
     const search = req.query.search || "";
 
@@ -111,6 +111,7 @@ export const patchIncident = async (req, res) =>{
     const {id} = req.params;
     const {status, priority, assigneeId} = PatchIncidentSchema.parse(req.body);
 
+    console.log(status);
     console.log("req.body looks like:", req.body);
 
     const data = {};
@@ -121,6 +122,11 @@ export const patchIncident = async (req, res) =>{
 
     console.log("data looks like:", data);
 
+    if (status === "RESOLVED") {
+      data.resolvedAt = new Date();
+    } else {
+      data.resolvedAt = null;  
+    }
 
     if(Object.keys(data).length === 0){
       return res.status(400).json({
