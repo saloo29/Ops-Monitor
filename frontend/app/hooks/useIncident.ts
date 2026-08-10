@@ -1,7 +1,7 @@
 'use client'
 
 import { useQuery } from "@tanstack/react-query";
-import getIncident from "../services/incidentService";
+import { getIncident } from "../services/incidentService";
 import { IncidentResponse } from "../types/types";
 
 export const useIncident = (page : number, pageSize : number) =>{

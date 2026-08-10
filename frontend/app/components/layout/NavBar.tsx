@@ -16,10 +16,10 @@ const NavBar = () => {
   return(
     <header className=" relative flex p-4 gap-x-8 items-center justify-between border-b border-border">
       <div className="flex items-center gap-2 ml-8">
-        <span className="text-2xl font-bold bg-indigo-600 w-10 h-10 rounded-sm flex items-center justify-center shadow-[0_0_12px_rgba(99,102,241,0.6)]">
+        <span className="text-xl font-bold bg-indigo-600 w-8 h-8 rounded-sm flex items-center justify-center shadow-[0_0_12px_rgba(99,102,241,0.6)]">
           O
         </span>
-        <span className="text-2xl font-bold">
+        <span className="text-xl font-bold">
           OpsMonitor
           <span className="text-indigo-600 shadow-[0_0_0_rgba(99,102,241,0.8)]">
             Intelligence

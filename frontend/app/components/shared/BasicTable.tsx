@@ -18,16 +18,22 @@ interface BasicTableProps <T> {
   setPage: (page: number) => void,
   totalPages: number
   onRowClick:  (row: T) => void
+  selectedId? : string | null
+}
+
+interface WithId {
+  incidentId?: string
 }
 
 
-function BasicTable <T>({ 
+function BasicTable <T extends WithId>({ 
   data, 
   columns,
   page,
   setPage,
   totalPages,
-  onRowClick
+  onRowClick,
+  selectedId
 } : BasicTableProps<T>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
@@ -56,13 +62,7 @@ function BasicTable <T>({
   if(!data.length) return <div>No data found</div>
 
   return(
-    <div 
-      className="
-        bg-slate-100/50 dark:bg-slate-800/50 
-        border border-slate-300 dark:border-slate-800
-        overflow-hidden rounded-sm shadow-sm
-      "
-    >
+    <div className="bg-slate-100/50 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-800 overflow-hidden rounded-sm shadow-sm" >
       <table className='w-full border-collapse'>
         <thead >
           {table.getHeaderGroups().map((headerGroup) => (
@@ -78,12 +78,12 @@ function BasicTable <T>({
                   key={header.id}
                   onClick={header.column.getToggleSortingHandler()}
                   className='
-                    text-start ml-4
-                    px-4 py-4
+                    text-start text-xs ml-4
+                    px-4 py-4 border-b
                     font-mono font-bold
-                    text-xs dark:text-slate-500 text-slate-600
+                    dark:text-slate-500 text-slate-600
                     uppercase tracking-widest
-                    border-b border-slate-200 dark:border-slate-700
+                    border-slate-200 dark:border-slate-700
                   '
                 >
                   {header.isPlaceholder 
@@ -106,7 +106,13 @@ function BasicTable <T>({
               <tr 
                 key={row.id}
                 onClick={() => onRowClick?.(row.original)}
-                className='hover:bg-slate-200/50 dark:hover:bg-slate-800/30 transition-colors group'
+                className={`
+                  transition-colors border-l-2 cursor-pointer
+                  ${row.original.incidentId === selectedId
+                    ? 'border-l-indigo-600 bg-indigo-50/50 dark:bg-indigo-950/20'
+                    : 'border-l-transparent hover:bg-slate-200/50 dark:hover:bg-slate-800/30'
+                  }  
+                `}
               >
                 {row.getVisibleCells().map((cell) => (
                   <td 
@@ -133,17 +139,14 @@ function BasicTable <T>({
         <button
           onClick={() => setPage(page - 1)}
           disabled={page === 1}
-          className='border rounded px-2 py-2 disabled:opacity-40'
+          className='border rounded-sm px-2 py-1 disabled:opacity-40'
         >
           {"<"}
         </button>
-        <span className='text-sm text-muted-foreground px-3 py-2'>
-          Page {page} of {totalPages}
-        </span>
         <button
           onClick={() => setPage(page + 1)}
           disabled={page === totalPages}
-          className='border rounded px-2 py-2 disabled:opacity-40'
+          className='border rounded-sm px-2 py-1 disabled:opacity-40'
         >
           {">"}
         </button>

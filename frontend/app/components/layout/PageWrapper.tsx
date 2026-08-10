@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react';
+import ReportIncidentButton from '../incidents/ReportIncidentButton';
 
 type WrapperProps = {
   children:  React.ReactNode,
@@ -10,7 +11,7 @@ type WrapperProps = {
 
 const PageWrapper = ({ children, title, description } : WrapperProps) => {
   return (
-    <div className='min-h-screen px-6 py-6'>
+    <div className='min-h-screen px-8 py-10'>
       <div className='w-full max-w-7xl mx-auto'>
         {(title || description) && (
           <div className='flex flex-col mb-6'>
@@ -22,6 +23,8 @@ const PageWrapper = ({ children, title, description } : WrapperProps) => {
         )}
         {children}
       </div>
+
+      <ReportIncidentButton />
     </div>
   );
 }

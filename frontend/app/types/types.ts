@@ -1,8 +1,9 @@
-type IncidentStatus = "OPEN" | "INVESTIGATING" | "IDENTIFIED" | "MONITORING" | "RESOLVED";
-type IncidentPriority = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
+export type IncidentStatus = "OPEN" | "INVESTIGATING" | "IDENTIFIED" | "MONITORING" | "RESOLVED";
+export type IncidentPriority = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
 
 export type Incident = {
   incidentId: string;
+  incidentCode: string
   title: string;
   description: string;
   status: IncidentStatus;
@@ -22,4 +23,19 @@ export type IncidentResponse = {
     total: number;
     totalPages: number;
   }
+}
+
+export type UpdateIncidentPayload = {
+  incidentId: string;
+  description?: string;
+  status?: IncidentStatus;
+  priority?: IncidentPriority;
+  assigneeId?: string;
+}
+
+export type CreateIncidentPayload = {
+  title: string;
+  description: string;
+  priority: IncidentPriority | "LOW";
+  status: IncidentStatus | "OPEN";
 }
