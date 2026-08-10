@@ -57,15 +57,19 @@ model User {
 model Incident {
   incidentId String @id @default(uuid())
   incidentCode String @unique
+
   title String
   description String
   status IncidentStatus @default(OPEN)
   priority Priority @default(LOW)
+
   evidence Json?
+
   reporter User @relation("Reporter", fields: [reporterId], references: [userId])
   assignee User? @relation("Assignee", fields: [assigneeId], references: [userId])
   reporterId String
   assigneeId String ?
+
   createdAt DateTime @default(now())
   resolvedAt DateTime?
   events IncidentEvent[]
@@ -80,4 +84,9 @@ model IncidentEvent {
   eventType IncidentEventType @default(CREATED)
   message String
   timeStamp DateTime @default(now())
+}
+
+model IncidentCounter {
+  id Int @id
+  incidentCount Int @default(0)
 }
