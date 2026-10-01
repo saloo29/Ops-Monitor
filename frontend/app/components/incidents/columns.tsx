@@ -47,7 +47,7 @@ export const collapsedIncidentColumns: ColumnDef<Incident>[] = [
     header: "INCIDENT",
     cell: ({ row }) => (
       <div className="flex flex-col px-4 py-2 ml-2 gap-0.5">
-        <span className="font-bold text-base truncate text-slate-900 dark:text-slate-200 mb-2">
+        <span className="font-bold text-base truncate text-slate-900 dark:text-slate-200 mb-2 line-clamp-1">
           {row.original.title}
         </span>
         <span className="font-semibold text-xs text-slate-900 dark:text-slate-200 ">
@@ -60,7 +60,7 @@ export const collapsedIncidentColumns: ColumnDef<Incident>[] = [
     accessorKey: "createdAt",
     header: "CREATED ON",
     cell: ({ row }) => (
-      <span className="font-semibold text-slate-900 dark:text-slate-200 p-2 mr-4">
+      <span className="font-semibold text-slate-900 dark:text-slate-200 p-2 mr-4 whitespace-nowrap">
         {formatDate(row.original.createdAt)}
       </span>
     )

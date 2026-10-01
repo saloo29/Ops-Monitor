@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import userRoutes from './routes/userRoutes.js'
 import incidentRoutes from './routes/incidentRoutes.js'
+import teamsRoutes from './routes/teamRoutes.js'
 
 const app = express();
 
@@ -14,7 +15,8 @@ app.use((res, req, next) => {
 });
 
 app.use('/api', userRoutes);
-app.use('/api', incidentRoutes);
+app.use('/api/incidents', incidentRoutes);
+app.use('/api/teams', teamsRoutes);
 
 app.listen(3000, () => {
   console.log("server running on 3000")

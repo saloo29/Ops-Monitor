@@ -65,17 +65,27 @@ export const getIncidents = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const sort = req.query.sort ||  "createdAt";
     const search = req.query.search || "";
-
     const skip = (page - 1) * limit;
+    const { status } = req.query;
+
+    const filters = {
+      ...(status && { status }),
+
+      ...(search ? {
+        OR: [
+          {
+            title: {contains: search, mode: "insensitive",}
+          },
+          {
+            description: {contains: search, mode: "insensitive",}
+          }
+        ]
+      } : {})
+    }
 
     const [incidents, total] = await Promise.all([
-      await prisma.incident.findMany({
-        where:{
-            OR: [
-              {title: {contains: search, mode: "insensitive"}},
-              {description: {contains: search, mode: "insensitive"}}
-            ]
-        },
+      prisma.incident.findMany({
+        where: filters,
         skip: skip,
         take: limit,
         orderBy: {
@@ -83,13 +93,8 @@ export const getIncidents = async (req, res) => {
         }
       }),
 
-      prisma.Incident.count({
-        where: {
-          OR: [
-            {title: {contains: search, mode: "insensitive"}},
-            {description: {contains: search, mode: "insensitive"}}
-          ]
-        }
+      prisma.incident.count({
+        where: filters
       })
     ]);
     console.log(incidents);

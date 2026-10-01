@@ -1,11 +1,25 @@
 import { PrismaClient, Prisma } from '@prisma/client';
 import { generateIncidentCode } from '../src/utils/generateIncidentCode.js';
 import { incidentsData } from './data/incident.js';
+import { teamsData } from './data/teams.js';
 
 const prisma = new PrismaClient();
 
 async function main() {
   console.log("Starting seed...");
+
+  const teams = await Promise.all(
+    teamsData.map(team => 
+      prisma.team.upsert({
+        where : { name :  team.name },
+        update: {},
+        create: team
+      })
+    )
+  );
+
+  const teamMap = Object.fromEntries(teams.map(t => [t.name, t.teamId]));
+  console.log("Teams seeded: ", Object.keys(teamMap));
 
   // 1. Create a Seed User using upsert (prevents duplicates)
   const seedUser = await prisma.user.upsert({
@@ -52,6 +66,7 @@ async function main() {
 
   console.log(`Seeded ${incidentsData.length} incidents successfully.`);
 }
+
 
 main()
   .catch((e) => {

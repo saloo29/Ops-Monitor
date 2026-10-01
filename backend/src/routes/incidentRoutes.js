@@ -4,9 +4,9 @@ import { createIncident, getIncidentById, getIncidents, patchIncident } from "..
 
 const router = Router();
 
-router.post('/incidents', createIncident);
-router.get('/incidents', getIncidents);
-router.get('/incidents/:id', getIncidentById);
-router.patch('/incidents/:id', patchIncident);
+router.post('/', createIncident);
+router.get('/', getIncidents);
+router.get('/:id', getIncidentById);
+router.patch('/:id', patchIncident);
 
 export default router;

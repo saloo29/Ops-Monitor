@@ -59,11 +59,11 @@ const ReportIncidentModal = ({ isOpen, onClose } : ReportIncidentModalProps) => 
             shadow-2xl w-full max-w-5xl mx-4 p-8 overlay">
               <div className=" flex flex-col gap-4">
                 <div className="flex flex-row justify-between">
-                  <div className="flex flex-col">
-                    <h2 className="font-slate-800 text-lg font-semibold">
+                  <div className="flex flex-col gap-1">
+                    <h2 className="font-slate-800 text-2xl font-semibold">
                       Report New Incident
                     </h2>
-                    <p className="text-xs">Provide clear details and evidence for the responders.</p>
+                    <p className="text-base">Provide clear details and evidence for the responders.</p>
                   </div>
                   <button onClick={onClose} className="ml-4">
                     <XMarkIcon className="w-6 h-6 text-slate-500"/>

@@ -14,9 +14,6 @@ import { useState } from 'react';
 interface BasicTableProps <T> {
   data: T[],
   columns: ColumnDef<T>[],
-  page: number;
-  setPage: (page: number) => void,
-  totalPages: number
   onRowClick:  (row: T) => void
   selectedId? : string | null
 }
@@ -29,9 +26,6 @@ interface WithId {
 function BasicTable <T extends WithId>({ 
   data, 
   columns,
-  page,
-  setPage,
-  totalPages,
   onRowClick,
   selectedId
 } : BasicTableProps<T>) {
@@ -45,7 +39,6 @@ function BasicTable <T extends WithId>({
     data,
     columns,
     manualPagination: true,
-    pageCount: totalPages,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -59,7 +52,12 @@ function BasicTable <T extends WithId>({
 
   console.log(data.length)
 
-  if(!data.length) return <div>No data found</div>
+  if(!data.length) return (
+    <div className="flex flex-col items-center justify-center py-16 text-center">
+      <span className="text-4xl mb-3">🔍</span>
+      <p className="font-semibold text-slate-600 dark:text-slate-400">No incidents found</p>
+    </div>
+  )
 
   return(
     <div className="bg-slate-100/50 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-800 overflow-hidden rounded-sm shadow-sm" >
@@ -132,25 +130,6 @@ function BasicTable <T extends WithId>({
             ))}
         </tbody>
       </table>
-
-      
-
-      <div className='flex justify-end gap-2 p-4'>
-        <button
-          onClick={() => setPage(page - 1)}
-          disabled={page === 1}
-          className='border rounded-sm px-2 py-1 disabled:opacity-40'
-        >
-          {"<"}
-        </button>
-        <button
-          onClick={() => setPage(page + 1)}
-          disabled={page === totalPages}
-          className='border rounded-sm px-2 py-1 disabled:opacity-40'
-        >
-          {">"}
-        </button>
-      </div>
     </div>
   )
 }
