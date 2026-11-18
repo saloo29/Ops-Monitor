@@ -29,6 +29,15 @@ export const incidentColumns : ColumnDef<Incident>[] = [
     }
   },
   {
+    accessorKey: "teamName",
+    header: "TEAM",
+    cell: ({ row }) => (
+      <span className="font-semibold text-base text-slate-900 dark:text-slate-200">
+        {row.original.team?.name ?? "Unassigned"}
+      </span>
+    )
+  },
+  {
     accessorKey: "status",
     header: "STATUS",
     cell: ({ row }) => <StatusBadge status={row.original.status} />
@@ -36,7 +45,12 @@ export const incidentColumns : ColumnDef<Incident>[] = [
   {
     accessorKey: "createdAt",
     header: "CREATED ON",
-    cell: ({ row }) => formatDate(row.original.createdAt)
+    cell: ({ row }) => ( 
+      <span className="font-semibold text-base text-slate-900 dark:text-slate-200">
+        {formatDate(row.original.createdAt)}
+      </span>
+      
+    )
   },
 ];
 

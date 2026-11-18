@@ -32,7 +32,7 @@ export default function RootLayout({
       >
       <Providers>
         <NavBar />
-          <main>
+          <main className="w-full">
             {children}
           </main>
       </Providers>

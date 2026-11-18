@@ -1,4 +1,3 @@
-import StatusBadge from "../components/shared/StatusBagde";
 import { IncidentResponse, UpdateIncidentPayload, CreateIncidentPayload, IncidentStatus } from "../types/types";
 import api from "@/lib/axios";
 

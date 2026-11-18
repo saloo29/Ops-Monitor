@@ -72,7 +72,6 @@ model Incident {
   reporterId String
   assigneeId String ?
   teamId String?
-  teamName String?
   team Team? @relation(fields: [teamId], references: [teamId])
 
   createdAt DateTime @default(now())

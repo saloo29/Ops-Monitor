@@ -42,6 +42,10 @@ export const getTeamById = async (req, res) => {
     const team = await prisma.team.findUnique({
       where: { teamId },
       select: {
+        teamId: true,
+        name: true,
+        createdAt: true,
+
         members: {
           select: {
             userId: true,
@@ -52,16 +56,13 @@ export const getTeamById = async (req, res) => {
         },
 
         incidents: {
-          orderBy: { createdAt: 'desc' },
-          select: {
-            incidentId: true,
-            incidentCode: true,
-            title: true,
-            status: true,
-            priority: true,
-            createdAt: true,
+          where: { 
+            status: {
+            not: 'RESOLVED'
           }
-        }
+        },
+          orderBy: { createdAt: 'desc' }
+        },
       }
     });
 
@@ -72,7 +73,10 @@ export const getTeamById = async (req, res) => {
       data: team 
     });
   } catch (err) {
-    console.error("get team by id error:", err)
-    return res.status(500).json({ message: err.message });
+    console.error("get team by id error:", err);
+
+    return res.status(500).json({ 
+      message: err.message 
+    });
   }
 }

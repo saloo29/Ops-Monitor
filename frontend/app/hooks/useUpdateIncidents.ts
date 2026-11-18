@@ -7,11 +7,17 @@ export const useUpdateIncident = () => {
   return useMutation({
     mutationFn: updateIncident,
 
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["incidents"],
-      });
-      console.log("mutation successfull")
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ["incidents"],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ["teams"]
+        })
+      ])
+      
+      console.log("Mutation successful. Queries invalidated");
     },
   });
 }

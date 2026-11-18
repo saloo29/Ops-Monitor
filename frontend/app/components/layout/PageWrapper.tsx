@@ -11,7 +11,7 @@ type WrapperProps = {
 
 const PageWrapper = ({ children, title, description } : WrapperProps) => {
   return (
-    <div className='min-h-screen px-8 py-10'>
+    <div className='relative w-full px-8 py-10'>
       <div className='w-full max-w-7xl mx-auto'>
         {(title || description) && (
           <div className='flex flex-col mb-6'>

@@ -3,10 +3,11 @@ import { IncidentSchema, PatchIncidentSchema } from "../validations/incidentSche
 import { PRIORITY, STATUS } from "../utils/enums.js";
 import { Prisma } from "@prisma/client";
 import { generateIncidentCode } from "../utils/generateIncidentCode.js";
+import { includes } from "zod";
 
 
 export const createIncident = async (req, res) => {
-  const { title, description, status, priority} = IncidentSchema.parse(req.body);
+  const { title, description, status, priority, teamId} = IncidentSchema.parse(req.body);
 
   console.log(req.body);
   console.log(req.user);
@@ -26,6 +27,7 @@ export const createIncident = async (req, res) => {
             status: status || STATUS.OPEN,
             incidentCode,
             reporterId: "96efe861-7b56-4e6b-9104-c03d9a909de3",
+            teamId
           }
         })
       }, {
@@ -90,6 +92,14 @@ export const getIncidents = async (req, res) => {
         take: limit,
         orderBy: {
           [sort]: "desc"
+        },
+        include : {
+          team: {
+            select: {
+              teamId: true,
+              name: true,
+            }
+          }
         }
       }),
 

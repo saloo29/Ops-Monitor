@@ -109,17 +109,24 @@ const IncidentCard =  ({
                   Full Description
                 </span>
                 <button className="flex flex-row gap-1 items-center"
-                  onClick={() => setIsEditing(true)}
+                  onClick={(e) => { 
+                    e.stopPropagation();
+                    setIsEditing(true)
+                  }}
                 >
                   <PencilIcon className="w-4 fill-indigo-600 stroke-2"/>
                   <span className="font-mono text-sm tracking-tighter font-semibold text-indigo-600">Edit</span>
                 </button>
               </div>
               {isEditing ? (
-                <div className="flex flex-col gap-2">
+                <div 
+                  className="flex flex-col gap-2"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <textarea 
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
+                    onClick={(e) => e.stopPropagation()}
                     className="
                       border dark:border-slate-700 border-slate-400 rounded-sm 
                       px-4 py-4 w-full min-h-24 mb-2
@@ -132,7 +139,8 @@ const IncidentCard =  ({
 
                   ">
                     <button 
-                      onClick={() => 
+                      onClick={(e) => {
+                        e.stopPropagation();
                         mutate({
                           incidentId: incident.incidentId,
                           description,
@@ -140,7 +148,7 @@ const IncidentCard =  ({
                           onSuccess: () => {
                             setIsEditing(false);
                           }
-                        })
+                        })}
                       }
                       className="
                         border-2 px-3 py-1 rounded-sm 
@@ -156,8 +164,9 @@ const IncidentCard =  ({
                       hover:bg-indigo-300 dark:hover:bg-indigo-700/50
                       font-medium text-sm
                     "
-                      onClick={() => {
-                        setIsEditing(false)
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsEditing(false);
                         setDescription(incident.description);
                       }}
                     >Cancel</button>
@@ -216,7 +225,10 @@ const IncidentCard =  ({
               {!isResolved ? (
                 <div className='flex gap-2 mt-1'>
                   <button
-                    onClick={() => mutate({ incidentId: incident.incidentId, status: prevStatus})}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      mutate({ incidentId: incident.incidentId, status: prevStatus})
+                    }}
                     disabled={!canGoBack || isPending}
                     className="
                       border border-slate-400 rounded-md px-3 py-2
@@ -227,7 +239,10 @@ const IncidentCard =  ({
                     <ArrowLeftIcon className='w-4 fill-slate-700 dark:fill-slate-100 stoke-6'/>
                   </button>
                   <button
-                   onClick={() => mutate({ incidentId: incident.incidentId, status: nextStatus})}
+                   onClick={(e) => { 
+                    e.stopPropagation();
+                    mutate({ incidentId: incident.incidentId, status: nextStatus})
+                   }}
                    disabled={!canGoAhead || isPending}
                    className="
                     flex-1 bg-indigo-600 hover:bg-indigo-700 rounded-md py-2
@@ -250,7 +265,10 @@ const IncidentCard =  ({
                     RESOLVED
                   </button>
                   <button
-                    onClick={() =>mutate({ incidentId: incident.incidentId, status: "OPEN"})}
+                    onClick={(e) => { 
+                      e.stopPropagation();
+                      mutate({ incidentId: incident.incidentId, status: "OPEN"})
+                    }}
                     disabled={isPending}
                     className="
                       w-full py-2 rounded-md font-bold uppercase text-xs
@@ -262,8 +280,6 @@ const IncidentCard =  ({
                   </button>
                 </div>
               )}
-
-             
             </div>
           </div>
         </div>

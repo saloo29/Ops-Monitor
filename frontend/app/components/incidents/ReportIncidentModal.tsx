@@ -3,7 +3,7 @@ import { useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { IncidentPriority } from '@/app/types/types';
 import { PhotoIcon } from "@heroicons/react/24/solid";
-
+import { useTeams } from "@/app/hooks/useTeams";
 
 interface ReportIncidentModalProps {
   isOpen : boolean;
@@ -11,14 +11,16 @@ interface ReportIncidentModalProps {
 }
 
 const PRIORITIES = ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'];
-const TEAM = ['Infrastructure', 'Payments', 'Frontend', 'Backend', 'L2']
 
 const ReportIncidentModal = ({ isOpen, onClose } : ReportIncidentModalProps) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState<IncidentPriority>('LOW');
-  const [team, setTeam] = useState('');
+  const [teamId, setTeamId] = useState('');
   const {mutate, isPending } = useCreateIncident();
+
+  const { data: teamsData, isLoading: teamsLoading } = useTeams();
+  const teams = teamsData?.data ?? [];
 
   if(!isOpen) return null;
 
@@ -30,13 +32,15 @@ const ReportIncidentModal = ({ isOpen, onClose } : ReportIncidentModalProps) => 
           title, 
           description, 
           priority,
-          status: 'OPEN'
+          status: 'OPEN',
+          teamId
         },
         {
           onSuccess: () => {
             setTitle('');
             setDescription('');
             setPriority('LOW');
+            setTeamId('')
             onClose();
           }
         }
@@ -115,14 +119,18 @@ const ReportIncidentModal = ({ isOpen, onClose } : ReportIncidentModalProps) => 
                     <div className="w-full flex flex-col gap-2">
                       <label className="uppercase text-xs font-mono text-semibold text-slate-500">Team</label>
                       <select
-                      value={team}
-                      onChange={(e) => setTeam(e.target.value)}
+                      value={teamId}
+                      onChange={(e) => setTeamId(e.target.value)}
+                      disabled={teamsLoading}
                         className="border border-slate-300 dark:border-slate-700
                           rounded-md px-3 py-2 text-sm bg-card
                           focus:outline-none focus:ring-2 focus:ring-indigo-500"
                       >
-                        {TEAM.map(t => (
-                          <option key={t} value={t}>{t}</option>
+                        <option value="">
+                          {teamsLoading ? 'Loading teams...' : 'Select a team'}
+                        </option>
+                        {teams.map(t => (
+                          <option key={t.teamId} value={t.teamId}>{t.name}</option>
                         ))}
                       </select>
                     </div>
